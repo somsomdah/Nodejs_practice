@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+		<title>메모 페이지</title>
+        
+        <!-- 제이쿼리 사용 -->
+        <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+        
+        <!-- moment 사용 -->
+        <script src="moment.min.js"></script>
+        <script>
+        
+            // 문서 로딩 완료 시
+            $(function() {
+                var curDate = moment().format('YYYY-MM-DD HH:mm');
+                $('#createDate').attr('value', curDate);
+                
+                // 파일선택 값이 바뀌면 
+                $("#photoInput").change(function() {
+                    readURL(this);
+                });
+            });
+            
+            // 파일선택한 정보를 이용해 이미지 프리뷰
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#photoOutput').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+             
+        </script>
+        
+	</head>
+    <body>
+        <h3>나의 메모</h3>
+        <br>
+        <form method="post" enctype="multipart/form-data" action="/process/save">
+            <table>
+                <tr>
+                    <td><label>작성자</label></td>
+                    <td><input type="text" name="author" /></td>
+                </tr>
+                <tr>
+                    <td><label>작성일시</label></td>
+                    <td><input type="text" name="createDate" id="createDate"/></td>
+                </tr>
+                <tr>
+                    <td><label>내용</label></td>
+                    <td><textarea name="contents" style="width:12em;height:10em;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label>사진</label></td>
+                    <td><input type="file" name="photo" id="photoInput" /><br><img src="" id="photoOutput" width="200px" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="저장" name=""/>
+            <input type="button" value="닫기" />
+        </form>
+    </body>
+</html>
